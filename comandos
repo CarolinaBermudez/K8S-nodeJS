@@ -1,0 +1,80 @@
+--------------------------------------------------------------------------
+Esto nos crea la aplicacion react llamada client
+--------------------------------------------------------------------------
+cd /kubernetes/K8S-nodeJS
+npx create-react-app client
+
+--------------------------------------------------------------------------
+Una vez creado el folder server se ejecuta lo sig.
+no genera el package.json
+--------------------------------------------------------------------------
+ cd server
+ npm init
+
+---------------------------------------------------------------------------
+ Se agrega lo sig. a server/package.json
+"dependencies": {
+"express": "4.16.3",
+"pg": "8.0.3",
+"cors": "2.8.4",
+"nodemon": "1.18.3",
+"body-parser": "*"
+}
+--------------------------------------------------------------------------
+npm i
+
+--------------------------------------------------------------------------
+Localmente se prueba el server 5000
+--------------------------------------------------------------------------
+npm run dev
+
+--------------------------------------------------------------------------
+En el client package.json se agregan dependencias tambien
+"axios": "0.18.0",
+"react-router-dom": "4.3.1"
+--------------------------------------------------------------------------
+npm i
+
+--------------------------------------------------------------------------
+Localmente se prueba el cliente 3000
+--------------------------------------------------------------------------
+npm run start
+
+--------------------------------------------------------------------------
+Ya creada la aplicacion (no debe funcionar junta pero si por separado) , se
+crea el archivo Dockerfile.dev client 
+--------------------------------------------------------------------------
+docker build -f Dockerfile.dev -t carolinabermudez/multi-client .
+docker run -it -p 4002:3000 carolinabermudez/multi-client
+
+--------------------------------------------------------------------------
+se crea el archivo Dockerfile.dev server 
+--------------------------------------------------------------------------
+docker build -f Dockerfile.dev -t carolinabermudez/multi-server .
+docker run -it -p 4003:5000 carolinabermudez/multi-server
+
+--------------------------------------------------------------------------
+se crea la carpeta nginx y el el archivo Dockerfile.dev
+--------------------------------------------------------------------------
+nada
+
+--------------------------------------------------------------------------
+Se ejecuta el archivo docker-compose y aqui empieza a funcionar todo 3050
+--------------------------------------------------------------------------
+cd ..
+docker-compose up --build
+
+--------------------------------------------------------------------------
+Se crea el Dockerfile sin dev en cliente 
+--------------------------------------------------------------------------
+cd client
+docker build -t carolinabermudez/multi-client .
+docker run -it -p 3000:3000 carolinabermudez/multi-client
+docker push carolinabermudez/multi-client
+--------------------------------------------------------------------------
+Se crea el Dockerfile sin dev en server.
+--------------------------------------------------------------------------
+cd server
+docker build -t carolinabermudez/multi-server .
+docker run -it -p 4002:5000 carolinabermudez/multi-server
+docker push carolinabermudez/multi-server
