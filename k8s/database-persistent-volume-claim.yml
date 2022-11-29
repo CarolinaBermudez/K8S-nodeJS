@@ -5,6 +5,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: sc-app
   resources:
     requests:
       storage: 1Gi
